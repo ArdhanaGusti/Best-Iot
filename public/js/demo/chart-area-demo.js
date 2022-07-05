@@ -28,11 +28,26 @@ function number_format(number, decimals, dec_point, thousands_sep) {
 }
 
 // Area Chart Example
+let arr_tempC = [];
+let arr_time = [];
+const getData =  async () => {
+    const response = await fetch('/api/data');
+    const data = await response.json();
+    for (let index = 0; index < data.length; index++) {
+      arr_tempC.splice(index, 0, data[index].temperature_c);
+      arr_time.splice(index, 0, data[index].created_at);
+    }
+}
+getData();
+// console.log(arr_tempC);
+// console.log(arr_time);
+// setInterval(getData, 3000);
+    // console.log(data.length);
 var ctx = document.getElementById("myAreaChart");
 var myLineChart = new Chart(ctx, {
   type: 'line',
   data: {
-    labels: ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
+    labels: arr_time,
     datasets: [{
       label: "Earnings",
       lineTension: 0.3,
@@ -46,7 +61,7 @@ var myLineChart = new Chart(ctx, {
       pointHoverBorderColor: "rgba(78, 115, 223, 1)",
       pointHitRadius: 10,
       pointBorderWidth: 2,
-      data: [0, 10000, 5000, 15000, 10000, 20000, 15000, 25000, 20000, 30000, 25000, 40000],
+      data: arr_tempC,
     }],
   },
   options: {
@@ -116,3 +131,5 @@ var myLineChart = new Chart(ctx, {
     }
   }
 });
+// getData();
+// 
